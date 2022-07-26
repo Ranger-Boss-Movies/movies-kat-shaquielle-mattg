@@ -6,12 +6,19 @@ const BASE_URI = `${BACKEND_HOST}/api/s3/download`;
 export default function Home(props) {
     return `
         <header>
-            <h1>Home Page</h1>
+            <div class="jumbotron jumbotron-1 d-flex justify-content-center">
+                <div class="inner-content text-center text-white bg-dark p-5">
+                    <h1 class="text uppercase">Welcome to Popcorn Cinema!</h1>
+                    <p style="color: white">Best movies in the world!</p>
+                   
+                </div>
+            </div>
+           
         </header>
         <main>
             <div>
                 <p>
-                    This is the home page text.
+                    
                 </p>    
             </div>
         </main>
