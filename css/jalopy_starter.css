@@ -16,3 +16,10 @@ footer {
     width: 100%;
     height: 2.5rem;
 }
+
+.jumbotron-1 {
+    background: url('https://t4.ftcdn.net/jpg/02/81/09/29/360_F_281092993_Q88asqHBPWEKsFndtyqM2eX7gPXAEy2V.jpg') center no-repeat;
+    background-size: cover;
+    padding-top: 5%;
+    padding-bottom: 5%;
+}
