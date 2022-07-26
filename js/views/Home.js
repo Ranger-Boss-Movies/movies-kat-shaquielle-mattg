@@ -23,6 +23,10 @@ function getTopMovieHTML() {
         </header>
         
         <main>
+        <div class="container">
+            <div class="row">
+            
+            
     `;
 }
 
@@ -30,14 +34,11 @@ function displayMovieHTML(movies) {
     let html = "";
     for (let i = 0; i < movies.length; i++) {
         html +=
-        `<div class="container">
-            <div class="row">
-                <div class="col-lg-2">
+        `
+                <div class="col-sm-4">
                       <p>${movies[i].title}</p>
                       <p>Rating</p>
                 </div>
-            </div>
-        </div>
     `;
     }
     return html
@@ -45,16 +46,18 @@ function displayMovieHTML(movies) {
 
 function getBottomMovieHTML() {
     return `
+        </div>
+            </div>
         </main>`;
 }
 
 export function HomeEvents() {
     // TODO: use an enum for message type
     // const authority = getUserRole();
-    const user = getUser();
-    if(!user) {
-        showNotification("Welcome visitor", "secondary");
-    } else {
-        showNotification("Welcome " + user.userName, "info");
-    }
+    // const user = getUser();
+    // if(!user) {
+    //     showNotification("Welcome visitor", "secondary");
+    // } else {
+    //     showNotification("Welcome " + user.userName, "info");
+    // }
 }
