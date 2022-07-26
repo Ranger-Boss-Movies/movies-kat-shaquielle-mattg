@@ -54,6 +54,7 @@ function getTopMovieHTML() {
         </div>
         
         <main>
+        <button id="add-movie" type="button">Add Movie</button>
         <div class="container">
             <div class="row">
             
@@ -107,7 +108,11 @@ function addMovieEventListener() {
     })
 }
 
+
+
+
 export function HomeEvents() {
     addMovieEventListener()
-    // TODO: use an enum for message type
+
 }
+
