@@ -23,3 +23,18 @@ footer {
     padding-top: 5%;
     padding-bottom: 5%;
 }
+
+.inner-content  {
+    background-color: rgba(108, 106, 106, 0.4);
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: space-between;
+}
+
+.col-sm-4 {
+    border: dotted black;
+}
