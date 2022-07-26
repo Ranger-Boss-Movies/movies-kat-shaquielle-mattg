@@ -25,7 +25,7 @@ function getTopMovieHTML() {
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalLabel">New message</h5>
+                        <h5 class="modal-title" id="modalLabel"></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -35,14 +35,19 @@ function getTopMovieHTML() {
                                 <input type="text" class="form-control" id="movie-title">
                             </div>
                             <div class="mb-3">
-                                <label for="message-text" class="col-form-label">Rating:</label>
-                                <textarea class="form-control" id="message-text"></textarea>
+                                <label for="movie-rating" class="col-form-label">Rating:</label>
+                                <input type="text" class="form-control" id="movie-rating">
+                            </div>
+                            <div class="mb-3">
+                                <label for="movie-genre" class="col-form-label">Genre:</label>
+                                <input type="text" class="form-control" id="movie-genre">
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Send message</button>
+                        <i class="bi bi-trash3-fill" style="color:red; font-size: 2rem"></i>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary">Add Movie</button>
                     </div>
                 </div>
             </div>
@@ -61,9 +66,10 @@ function displayMovieHTML(movies) {
     for (let i = 0; i < movies.length; i++) {
         html +=
             `
-                <div class="col-sm-4 movieCol" data-bs-toggle="modal" data-bs-target="#add-modal" data-bs-title="${movies[i].title}" data-bs-rating="${movies[i].rating}">
+                <div class="col-sm-4 movieCol" data-bs-toggle="modal" data-bs-target="#add-modal" data-bs-title="${movies[i].title}" data-bs-rating="${movies[i].rating}" data-bs-genre="${movies[i].genre}">
                       <p>${movies[i].title}</p>
-                      <p>${movies[i].rating}</p>
+                      <p><i class="bi bi-star-fill" style="color:goldenrod"></i>${movies[i].rating}</p>
+                      <p>${movies[i].genre}</p>
                 </div>
     `;
     }
@@ -84,19 +90,18 @@ function addMovieEventListener() {
             addModal.addEventListener('show.bs.modal', function(event) {
                 // Button that triggered the modal
                 let button = event.relatedTarget
-                // Extract info from data-bs-* attributes
-                let title = button.getAttribute('data-bs-title')
-                let rating = button.getAttribute('data-bs-rating')
-
-                // If necessary, you could initiate an AJAX request here
-                // and then do the updating in a callback.
-                //
-                // Update the modal's content.
+                let title = button.getAttribute('data-bs-title');
+                let rating = button.getAttribute('data-bs-rating');
+                let genre = button.getAttribute('data-bs-genre');
                 const modalTitle = addModal.querySelector('.modal-title')
-                const modalBodyInput = addModal.querySelector('.modal-body input')
+                const titleInput = addModal.querySelector('#movie-title');
+                const ratingInput = addModal.querySelector('#movie-rating');
+                const genreInput = addModal.querySelector('#movie-genre');
+                modalTitle.textContent = title
+                titleInput.value = title
+                ratingInput.value = rating
+                genreInput.value = genre
 
-                modalTitle.textContent = 'New message to ' + title
-                modalBodyInput.value = title
             })
         })
     })
