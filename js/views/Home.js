@@ -4,8 +4,15 @@ import {getUser} from "../auth.js";
 const BASE_URI = `${BACKEND_HOST}/api/s3/download`;
 
 export default function Home(props) {
+    let html = getTopMovieHTML();
+    html += displayMovieHTML(props.movies);
+    html += getBottomMovieHTML();
+    return html;
+}
+
+function getTopMovieHTML() {
     return `
-        <header>
+       <header>
             <div class="jumbotron jumbotron-1 d-flex justify-content-center">
                 <div class="inner-content text-center text-white p-5">
                     <h1 class="text uppercase">Welcome to Popcorn Cinema!</h1>
@@ -16,27 +23,29 @@ export default function Home(props) {
         </header>
         
         <main>
-            <div class="container">
-                  <div class="row">
-                    ${displayMovieCol()}
-                  </div>
-            </div>
-        </main>
     `;
 }
 
-function displayMovieCol() {
+function displayMovieHTML(movies) {
     let html = "";
     for (let i = 0; i < movies.length; i++) {
         html +=
-        `
-        <div class="col-lg-2">
-              <p></p>
-              <p></p>
+        `<div class="container">
+            <div class="row">
+                <div class="col-lg-2">
+                      <p>${movies[i].title}</p>
+                      <p>Rating</p>
+                </div>
+            </div>
         </div>
     `;
     }
     return html
+}
+
+function getBottomMovieHTML() {
+    return `
+        </main>`;
 }
 
 export function HomeEvents() {
