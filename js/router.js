@@ -1,5 +1,5 @@
 import Home, {HomeEvents} from "./views/Home.js";
-import AddMovieView, {AddMovieEvents} "./views/AddMovie.js";
+import AddMovieView, {AddMovieEvents} from "./views/AddMovie.js";
 import About, {AboutEvents} from "./views/About.js";
 import Error404 from "./views/Error404.js";
 import Loading from "./views/Loading.js";
