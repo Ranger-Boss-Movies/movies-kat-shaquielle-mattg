@@ -1,5 +1,4 @@
 import Home, {HomeEvents} from "./views/Home.js";
-import AddMovieView, {AddMovieEvents} from "./views/AddMovie.js";
 import About, {AboutEvents} from "./views/About.js";
 import Error404 from "./views/Error404.js";
 import Loading from "./views/Loading.js";
@@ -30,13 +29,6 @@ export default function router(URI) {
             uri: '/',
             title: 'Home',
             viewEvent: HomeEvents
-        },
-        '/addmovie': {
-            returnView: AddMovieView,
-            state: {},
-            uri: '/addmovie',
-            title: 'Add Movie',
-            viewEvent: AddMovieEvents
         },
         '/logout': {
             returnView: Logout,
