@@ -77,6 +77,7 @@ export default function router(URI) {
             uri: location.pathname,
             title: 'Loading...',
         }
+
     };
 
     // if we see a URI with index.html then interpret that as a route for /

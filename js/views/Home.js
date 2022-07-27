@@ -54,7 +54,8 @@ function getTopMovieHTML() {
         </div>
         
         <main>
-        <button id="add-movie" type="button">Add Movie</button>
+
+        
         <div class="container">
             <div class="row">
             
@@ -68,6 +69,7 @@ function displayMovieHTML(movies) {
         html +=
             `
                 <div class="col-sm-4 movieCol" data-bs-toggle="modal" data-bs-target="#add-modal" data-bs-title="${movies[i].title}" data-bs-rating="${movies[i].rating}" data-bs-genre="${movies[i].genre}">
+                        
                       <p>${movies[i].title}</p>
                       <p><i class="bi bi-star-fill" style="color:goldenrod"></i>${movies[i].rating}</p>
                       <p>${movies[i].genre}</p>
@@ -115,4 +117,3 @@ export function HomeEvents() {
     addMovieEventListener()
 
 }
-
