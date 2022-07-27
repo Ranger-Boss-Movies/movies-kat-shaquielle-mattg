@@ -46,6 +46,7 @@ body {
 }
 .poster {
     width: 100%;
+    border: 1px solid black;
 }
 
 .movieColContent {
