@@ -1,5 +1,5 @@
-import {showNotification} from "../messaging.js";
-import {getUser} from "../auth.js";
+import createView from "../createView.js"
+
 
 const BASE_URI = `${BACKEND_HOST}/api/s3/download`;
 
@@ -25,7 +25,7 @@ function getTopMovieHTML() {
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalLabel"></h5>
+                        <h5 class="modal-title" id="modalLabel">Add a Movie</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -45,9 +45,9 @@ function getTopMovieHTML() {
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <i class="bi bi-trash3-fill" style="color:red; font-size: 2rem"></i>
+                        <i type="button" class="bi bi-trash3-fill" id="delete-btn" style="color:red; font-size: 2rem"></i>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary">Add Movie</button>
+                        <button type="button" id="save-changes-btn" class="btn btn-primary" data-bs-dismiss="modal">Save Changes</button>
                     </div>
                 </div>
             </div>
@@ -84,18 +84,17 @@ function getBottomMovieHTML() {
         </div>
             </div>
 <!--            ADDED BUTTON for ADD MOVIE-->
-            <button type="button" id="add-movie-btn">ADD MOVIE NOW</button>
+            <button type="button" id="add-movie-btn" data-bs-toggle="modal" data-bs-target="#add-modal">Add Movie</button>
 
         </main>`;
 }
-function addMovieEventListener() {
+function editMovieEvent() {
     const movieCol = document.querySelectorAll(".movieCol");
     movieCol.forEach(function(col) {
         col.addEventListener('click', function(event) {
-            const addModal = document.getElementById('add-modal')
+            const addModal = document.querySelector('#add-modal')
             addModal.addEventListener('show.bs.modal', function(event) {
-                // Button that triggered the modal
-                let button = event.relatedTarget
+                let button = event.relatedTarget;
                 let title = button.getAttribute('data-bs-title');
                 let rating = button.getAttribute('data-bs-rating');
                 let genre = button.getAttribute('data-bs-genre');
@@ -117,31 +116,22 @@ function addMovieEventListener() {
 
 
 export function HomeEvents() {
-    addMovieEventListener()
+    editMovieEvent()
     // ADDED FUNC BELOW
-    addMovieToDisplay()
+    addMovieEvent()
 }
 
 // NEW ADD FUNCTION STUFF
-function addMovieToDisplay() {
-    const addButton = document.querySelectorAll("#add-movie-btn");
+function addMovieEvent() {
+    const addButton = document.querySelector("#add-movie-btn");
     addButton.addEventListener('click', function(event) {
-        // Button that triggered the modal
-        let button = event.relatedTarget
-        let title = button.getAttribute('data-bs-title');
-        let rating = button.getAttribute('data-bs-rating');
-        let genre = button.getAttribute('data-bs-genre');
-        const modalTitle = addButton.querySelector('.modal-title')
-        const titleInput = addButton.querySelector('#movie-title');
-        const ratingInput = addButton.querySelector('#movie-rating');
-        const genreInput = addButton.querySelector('#movie-genre');
-        modalTitle.textContent = title
-        titleInput.value = title
-        ratingInput.value = rating
-        genreInput.value = genre
-        const addNewMovie = document.querySelector("#add-movie")
-        addNewMovie.addEventListener("click", addMovie)
-
+        const modalTitle = document.querySelector('.modal-title')
+        modalTitle.textContent = "Add a Movie"
+        const addModal = document.querySelector('#add-modal')
+        addModal.addEventListener('show.bs.modal', function(event) {
+            const saveChangesBtn = document.querySelector('#save-changes-btn')
+            saveChangesBtn.addEventListener('click', addMovie)
+        })
     })
 }
 
@@ -149,22 +139,11 @@ function addMovieToDisplay() {
 
 
 function addMovie() {
-    const newMovieModalTitleInput = document.getElementById(`newMovieTitle`);
-    const newMovieModalRatingInput = document.getElementById(`newMovieRating`);
-    const newMovieModalGenreInput = document.getElementById(`newMovieGenre`);
-    const newMovieTitle = newMovieModalTitleInput.value.trim();
-    const newMovieRating = newMovieModalRatingInput.value.trim();
-    const newMovieGenre = newMovieModalGenreInput.value.trim();
-    if(newMovieTitle.length < 1 || newMovieRating.length < 1 || newMovieGenre.length === null) {
-        alert("Entries cannot be blank!")
-        console.log("Entries cannot be blank!");
-        return;
-    }
-    const newMovie = {
-        title: newMovieTitle,
-        rating: newMovieRating,
-        genre: newMovieGenre,
-    };
+    const titleInput = document.querySelector('#movie-title');
+    const ratingInput = document.querySelector('#movie-rating');
+    const genreInput = document.querySelector('#movie-genre');
+    let movieObject = {};
+    movieObject = {'title': titleInput.value, 'rating': ratingInput.value, 'genre': genreInput.value}
 
     console.log("Movie is ready to be inserted");
 
@@ -173,16 +152,15 @@ function addMovie() {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(newMovie)
+        body: JSON.stringify(movieObject)
     }
     fetch("https://cuddly-equable-trollius.glitch.me/movies", requestOptions)
         .then(function(response) {
             if(!response.ok) {
-                console.log("add movie error: " + response.status);
+                console.log("Error Adding Movie: " + response.status);
             } else {
-                console.log("add movie accepted");
-                // POST WITH ID????
-
+                console.log("Movie Added");
+                createView('/')
             }
         });
 
