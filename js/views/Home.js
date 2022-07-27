@@ -83,6 +83,9 @@ function getBottomMovieHTML() {
     return `
         </div>
             </div>
+<!--            ADDED BUTTON for ADD MOVIE-->
+            <button type="button" id="add-movie-btn">ADD MOVIE NOW</button>
+
         </main>`;
 }
 function addMovieEventListener() {
@@ -115,5 +118,74 @@ function addMovieEventListener() {
 
 export function HomeEvents() {
     addMovieEventListener()
+    // ADDED FUNC BELOW
+    addMovieToDisplay()
+}
+
+// NEW ADD FUNCTION STUFF
+function addMovieToDisplay() {
+    const addButton = document.querySelectorAll("#add-movie-btn");
+    addButton.addEventListener('click', function(event) {
+        // Button that triggered the modal
+        let button = event.relatedTarget
+        let title = button.getAttribute('data-bs-title');
+        let rating = button.getAttribute('data-bs-rating');
+        let genre = button.getAttribute('data-bs-genre');
+        const modalTitle = addButton.querySelector('.modal-title')
+        const titleInput = addButton.querySelector('#movie-title');
+        const ratingInput = addButton.querySelector('#movie-rating');
+        const genreInput = addButton.querySelector('#movie-genre');
+        modalTitle.textContent = title
+        titleInput.value = title
+        ratingInput.value = rating
+        genreInput.value = genre
+        const addNewMovie = document.querySelector("#add-movie")
+        addNewMovie.addEventListener("click", addMovie)
+
+    })
+}
+
+
+
+
+function addMovie() {
+    const newMovieModalTitleInput = document.getElementById(`newMovieTitle`);
+    const newMovieModalRatingInput = document.getElementById(`newMovieRating`);
+    const newMovieModalGenreInput = document.getElementById(`newMovieGenre`);
+    const newMovieTitle = newMovieModalTitleInput.value.trim();
+    const newMovieRating = newMovieModalRatingInput.value.trim();
+    const newMovieGenre = newMovieModalGenreInput.value.trim();
+    if(newMovieTitle.length < 1 || newMovieRating.length < 1 || newMovieGenre.length === null) {
+        alert("Entries cannot be blank!")
+        console.log("Entries cannot be blank!");
+        return;
+    }
+    const newMovie = {
+        title: newMovieTitle,
+        rating: newMovieRating,
+        genre: newMovieGenre,
+    };
+
+    console.log("Movie is ready to be inserted");
+
+    const requestOptions = {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newMovie)
+    }
+    fetch("https://cuddly-equable-trollius.glitch.me/movies", requestOptions)
+        .then(function(response) {
+            if(!response.ok) {
+                console.log("add movie error: " + response.status);
+            } else {
+                console.log("add movie accepted");
+                // POST WITH ID????
+
+            }
+        });
 
 }
+
+
