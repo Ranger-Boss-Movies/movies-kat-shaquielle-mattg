@@ -37,6 +37,9 @@ footer {
     flex-wrap: wrap;
     align-content: space-between;
 }
+.poster {
+    width: 100%
+}
 
 .col-sm-4 {
     border: dotted black;
