@@ -8,6 +8,7 @@
 .jalopy-container {
     position: relative;
     min-height: 100vh;
+    padding: 0
 }
 #app {
     padding-bottom: 2.5rem;
@@ -21,14 +22,20 @@ footer {
 }
 
 .jumbotron-1 {
-    background: url('https://media.istockphoto.com/photos/popcorn-spilled-from-a-paper-bucket-picture-id1311068539?b=1&k=20&m=1311068539&s=170667a&w=0&h=LRNnDk8zMnjBWhPEiyKLNTnwlOwpjzjoPGSqsZYDuPI=') center no-repeat;
+    background: url("/assets/popcorn.png");
     background-size: cover;
     padding-top: 5%;
     padding-bottom: 5%;
+    margin-bottom: .75rem;
+    border-bottom: darkgoldenrod .5rem solid;
 }
 
 .inner-content  {
     background-color: rgba(108, 106, 106, 0.4);
+}
+body {
+    background-color: #222;
+    color: #CCC;
 }
 
 .container {
@@ -38,12 +45,16 @@ footer {
     align-content: space-between;
 }
 .poster {
-    width: 100%
+    width: 100%;
 }
 
-.col-sm-4 {
-    border: dotted black;
+.movieColContent {
+    background-color: #333;
+    width: 99%;
+    margin: 0;
+    /*padding: 1rem;*/
 }
+
 
 #logo-text{
     font-family: 'Montserrat Subrayada', sans-serif;
