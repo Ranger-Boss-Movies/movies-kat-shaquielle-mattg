@@ -47,7 +47,8 @@ function getTopMovieHTML() {
                     <div class="modal-footer">
                         <i type="button" class="bi bi-trash3-fill" id="delete-btn" data-bs-dismiss="modal" style="color:red; font-size: 2rem"></i>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" id="save-changes-btn" class="btn btn-primary" data-bs-dismiss="modal">Save Changes</button>
+                        <button type="button" id="modal-edit-movie" class="btn btn-primary" data-bs-dismiss="modal">Edit Movie</button>
+                        <button type="button" id="modal-add-movie" class="btn btn-primary" data-bs-dismiss="modal">Add Movie</button>
                     </div>
                 </div>
             </div>
@@ -122,20 +123,17 @@ function addListeners() {
         })
     const deleteButton = document.querySelector("#delete-btn")
     deleteButton.addEventListener("click", deleteMovie)
-    const saveChangesBtn = document.querySelector('#save-changes-btn')
-    saveChangesBtn.addEventListener('click', editMovie)
+    const modalEditBtn = document.querySelector('#modal-edit-movie')
+    modalEditBtn.addEventListener('click', editMovie)
 }
 
 function addMovieEvent() {
+    const modalAddBtn = document.querySelector('#modal-add-movie')
+    modalAddBtn.addEventListener('click', addMovie)
     const addButton = document.querySelector("#add-movie-btn");
     addButton.addEventListener('click', function(event) {
         const modalTitle = document.querySelector('.modal-title')
         modalTitle.textContent = "Add a Movie"
-        const addModal = document.querySelector('#add-modal')
-        addModal.addEventListener('show.bs.modal', function(event) {
-            const saveChangesBtn = document.querySelector('#save-changes-btn')
-            saveChangesBtn.addEventListener('click', addMovie)
-        })
     })
 }
 
