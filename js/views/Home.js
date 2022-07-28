@@ -89,12 +89,20 @@ function getBottomMovieHTML() {
     return `
         </div>
             </div>
-<!--            ADDED BUTTON for ADD MOVIE-->
             <button type="button" id="add-movie-btn" data-bs-toggle="modal" data-bs-target="#add-modal">Add Movie</button>
-
         </main>`;
 }
-function editMovieEvent() {
+
+
+
+
+
+export function HomeEvents() {
+    addListeners()
+    addMovieEvent()
+}
+
+function addListeners() {
     const addModal = document.querySelector('#add-modal')
     addModal.addEventListener('show.bs.modal', function(event) {
         let button = event.relatedTarget;
@@ -111,19 +119,13 @@ function editMovieEvent() {
         titleInput.value = title
         ratingInput.value = rating
         genreInput.value = genre
-    })
+        })
+    const deleteButton = document.querySelector("#delete-btn")
+    deleteButton.addEventListener("click", deleteMovie)
+    const saveChangesBtn = document.querySelector('#save-changes-btn')
+    saveChangesBtn.addEventListener('click', editMovie)
 }
 
-
-
-
-export function HomeEvents() {
-    editMovieEvent()
-    addMovieEvent()
-    deleteMovie()
-}
-
-// NEW ADD FUNCTION STUFF
 function addMovieEvent() {
     const addButton = document.querySelector("#add-movie-btn");
     addButton.addEventListener('click', function(event) {
@@ -166,26 +168,48 @@ function addMovie() {
 }
 
 function deleteMovie() {
-    let deleteButton = document.querySelector("#delete-btn")
-    deleteButton.addEventListener("click", function(event) {
-        const requestOptions = {
-            method: "DELETE",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        }
-        let button = document.querySelector("#add-modal")
+    const requestOptions = {
+        method: "DELETE",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    }
+    let button = document.querySelector("#add-modal")
+    const id = button.getAttribute(`data-bs-id`)
+    fetch(`https://cuddly-equable-trollius.glitch.me/movies/${id}`, requestOptions)
+        .then(function (response) {
+            if (!response.ok) {
+                console.log("There was an error in deleting movie: " + response.status);
+            } else {
+                console.log("Movie Deleted Successfully");
+                createView('/')
+            }
+        });
+}
 
-        const id = button.getAttribute(`data-bs-id`)
+function editMovie() {
+    let button = document.querySelector("#add-modal")
+    const id = button.getAttribute(`data-bs-id`)
+    const titleInput = document.querySelector('#movie-title');
+    const ratingInput = document.querySelector('#movie-rating');
+    const genreInput = document.querySelector('#movie-genre');
+    let movieObject = {};
+    movieObject = {'title': titleInput.value, 'rating': ratingInput.value, 'genre': genreInput.value}
+    const requestOptions = {
+        method: "PUT",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(movieObject)
+    }
 
-        fetch(`https://cuddly-equable-trollius.glitch.me/movies/${id}`, requestOptions)
-            .then(function (response) {
-                if (!response.ok) {
-                    console.log("There was an error in deleting movie: " + response.status);
-                } else {
-                    console.log("Movie Deleted Successfully");
-                    createView('/')
-                }
-            });
-    })
+    fetch(`https://cuddly-equable-trollius.glitch.me/movies/${id}`, requestOptions)
+        .then(function (response) {
+            if (!response.ok) {
+                console.log("There was an error in deleting movie: " + response.status);
+            } else {
+                console.log("Movie Deleted Successfully");
+                createView('/')
+            }
+        });
 }
