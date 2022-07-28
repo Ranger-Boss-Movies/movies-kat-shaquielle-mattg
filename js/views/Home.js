@@ -45,7 +45,7 @@ function getTopMovieHTML() {
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <i type="button" class="bi bi-trash3-fill" id="delete-btn" style="color:red; font-size: 2rem"></i>
+                        <i type="button" class="bi bi-trash3-fill" id="delete-btn" data-bs-dismiss="modal" style="color:red; font-size: 2rem"></i>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <button type="button" id="save-changes-btn" class="btn btn-primary" data-bs-dismiss="modal">Save Changes</button>
                     </div>
@@ -66,13 +66,19 @@ function getTopMovieHTML() {
 function displayMovieHTML(movies) {
     let html = "";
     for (let i = 0; i < movies.length; i++) {
+        let moviePoster = movies[i].poster
+        if(!movies[i].poster) {
+            moviePoster = '../../assets/default-poster.png'
+        }
         html +=
             `
-                 <div class="col-3 movieCol" data-bs-toggle="modal" data-bs-target="#add-modal" data-bs-title="${movies[i].title}" data-bs-rating="${movies[i].rating}" data-bs-genre="${movies[i].genre}">
-                      <image class="poster" src="${movies[i].poster}"></image>
-                      <p>${movies[i].title}</p>
-                      <p><i class="bi bi-star-fill" style="color:goldenrod"></i>${movies[i].rating}</p>
-                      <p>${movies[i].genre}</p>
+                 <div class="col-3 movieCol" data-bs-toggle="modal" data-bs-target="#add-modal" data-bs-title="${movies[i].title}" data-bs-rating="${movies[i].rating}" data-bs-genre="${movies[i].genre}" data-bs-id="${movies[i].id}">
+                    <div class="movieColContent">
+                      <image class="poster" src="${moviePoster}"></image>
+                      <p class="px-2 mb-1">${movies[i].title}</p>
+                      <p class="px-2 mb-1"><i class="bi bi-star-fill" style="color:goldenrod"></i>${movies[i].rating}</p>
+                      <p class="px-2 pb-2">${movies[i].genre}</p>
+                    </div>
                 </div>
     `;
     }
@@ -89,26 +95,22 @@ function getBottomMovieHTML() {
         </main>`;
 }
 function editMovieEvent() {
-    const movieCol = document.querySelectorAll(".movieCol");
-    movieCol.forEach(function(col) {
-        col.addEventListener('click', function(event) {
-            const addModal = document.querySelector('#add-modal')
-            addModal.addEventListener('show.bs.modal', function(event) {
-                let button = event.relatedTarget;
-                let title = button.getAttribute('data-bs-title');
-                let rating = button.getAttribute('data-bs-rating');
-                let genre = button.getAttribute('data-bs-genre');
-                const modalTitle = addModal.querySelector('.modal-title')
-                const titleInput = addModal.querySelector('#movie-title');
-                const ratingInput = addModal.querySelector('#movie-rating');
-                const genreInput = addModal.querySelector('#movie-genre');
-                modalTitle.textContent = title
-                titleInput.value = title
-                ratingInput.value = rating
-                genreInput.value = genre
-
-            })
-        })
+    const addModal = document.querySelector('#add-modal')
+    addModal.addEventListener('show.bs.modal', function(event) {
+        let button = event.relatedTarget;
+        let title = button.getAttribute('data-bs-title');
+        let rating = button.getAttribute('data-bs-rating');
+        let genre = button.getAttribute('data-bs-genre');
+        let id = button.getAttribute('data-bs-id');
+        const modalTitle = addModal.querySelector('.modal-title')
+        const titleInput = addModal.querySelector('#movie-title');
+        const ratingInput = addModal.querySelector('#movie-rating');
+        const genreInput = addModal.querySelector('#movie-genre');
+        addModal.setAttribute('data-bs-id', id)
+        modalTitle.textContent = title
+        titleInput.value = title
+        ratingInput.value = rating
+        genreInput.value = genre
     })
 }
 
@@ -117,8 +119,8 @@ function editMovieEvent() {
 
 export function HomeEvents() {
     editMovieEvent()
-    // ADDED FUNC BELOW
     addMovieEvent()
+    deleteMovie()
 }
 
 // NEW ADD FUNCTION STUFF
@@ -134,8 +136,6 @@ function addMovieEvent() {
         })
     })
 }
-
-
 
 
 function addMovie() {
@@ -163,7 +163,29 @@ function addMovie() {
                 createView('/')
             }
         });
-
 }
 
+function deleteMovie() {
+    let deleteButton = document.querySelector("#delete-btn")
+    deleteButton.addEventListener("click", function(event) {
+        const requestOptions = {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }
+        let button = document.querySelector("#add-modal")
 
+        const id = button.getAttribute(`data-bs-id`)
+
+        fetch(`https://cuddly-equable-trollius.glitch.me/movies/${id}`, requestOptions)
+            .then(function (response) {
+                if (!response.ok) {
+                    console.log("There was an error in deleting movie: " + response.status);
+                } else {
+                    console.log("Movie Deleted Successfully");
+                    createView('/')
+                }
+            });
+    })
+}
