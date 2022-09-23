@@ -19,12 +19,7 @@ export default function router(URI) {
         '/': {
             returnView: Home,
             state: {
-                movies: {
-                    url: "https://cuddly-equable-trollius.glitch.me/movies",
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }
+                movies: '/api/movies'
             },
             uri: '/',
             title: 'Home',
