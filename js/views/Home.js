@@ -81,7 +81,7 @@ function displayMovieHTML(movies) {
         }
         html +=
             `
-                 <div class="col-3 movieCol" data-bs-toggle="modal" data-bs-target="#add-modal" data-bs-title="${movies[i].title}" data-bs-rating="${movies[i].rating}" data-bs-genre="${movies[i].genre}" data-bs-id="${movies[i].id}">
+                 <div class="col-3 movieCol" data-bs-toggle="modal" data-bs-target="#add-modal" data-bs-title="${movies[i].title}" data-bs-rating="${movies[i].rating}" data-bs-genre="${movies[i].genres.map(el => el.name).join('-')}" data-bs-id="${movies[i].id}">
                     <div class="movieColContent">
                       <image class="poster" src="${moviePoster}"></image>
                       <p class="px-2 mb-1">${movies[i].title}</p>
@@ -117,7 +117,7 @@ function addListeners() {
         let button = event.relatedTarget;
         let title = button.getAttribute('data-bs-title');
         let rating = button.getAttribute('data-bs-rating');
-        let genre = button.getAttribute('data-bs-genre');
+        let genre = button.getAttribute('data-bs-genre').split("-").join(", ");
         let id = button.getAttribute('data-bs-id');
         const modalTitle = addModal.querySelector('.modal-title')
         const titleInput = addModal.querySelector('#movie-title');
