@@ -150,6 +150,9 @@ async function fetchMovie() {
 }
 async function addMovie() {
     const data = await fetchMovie();
+
+    console.log(data)
+
     const title = data.Title;
     const rated = data.Rated;
     const year = data.Year;
