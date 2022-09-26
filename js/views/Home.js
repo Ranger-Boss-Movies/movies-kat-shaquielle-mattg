@@ -23,7 +23,7 @@ function getTopMovieHTML() {
        <header>
             <div class="jumbotron jumbotron-1 d-flex justify-content-center">
                 <div class="inner-content text-center text-white p-5">
-                    <h1 class="text uppercase">Welcome to Popcorn Cinema!</h1>
+                    <h1 class="text uppercase">Welcome to Ranger Boss Cinema!</h1>
                     <p style="color: white">Best movies in the world!</p>
                 </div>
             </div>
