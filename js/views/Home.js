@@ -42,14 +42,6 @@ function getTopMovieHTML() {
                                 <label for="movie-title" class="col-form-label">Title:</label>
                                 <input type="text" class="form-control" id="movie-title">
                             </div>
-                            <div class="mb-3">
-                                <label for="movie-rated" class="col-form-label">Rated:</label>
-                                <input type="text" class="form-control" id="movie-rated">
-                            </div>
-                            <div class="mb-3">
-                                <label for="movie-genre" class="col-form-label">Genre:</label>
-                                <input type="text" class="form-control" id="movie-genre">
-                            </div>
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -117,18 +109,18 @@ function addListeners() {
     addModal.addEventListener('show.bs.modal', function(event) {
         let button = event.relatedTarget;
         let title = button.getAttribute('data-bs-title');
-        let rated = button.getAttribute('data-bs-rated');
-        let genre = button.getAttribute('data-bs-genre').split("-").join(", ");
+        // let rated = button.getAttribute('data-bs-rated');
+        // let genre = button.getAttribute('data-bs-genre').split("-").join(", ");
         let id = button.getAttribute('data-bs-id');
         const modalTitle = addModal.querySelector('.modal-title')
         const titleInput = addModal.querySelector('#movie-title');
-        const ratedInput = addModal.querySelector('#movie-rated');
-        const genreInput = addModal.querySelector('#movie-genre');
+        // const ratedInput = addModal.querySelector('#movie-rated');
+        // const genreInput = addModal.querySelector('#movie-genre');
         addModal.setAttribute('data-bs-id', id)
         modalTitle.textContent = title
         titleInput.value = title
-        ratedInput.value = rated
-        genreInput.value = genre
+        // ratedInput.value = rated
+        // genreInput.value = genre
         })
     const deleteButton = document.querySelector("#delete-btn")
     deleteButton.addEventListener("click", deleteMovie)
@@ -145,16 +137,49 @@ function addMovieEvent() {
         modalTitle.textContent = "Add a Movie"
     })
 }
+async function fetchMovie() {
+    const title = document.querySelector('#movie-title').value;
+    return await fetch(`${OMDB_URL}&t=${title}`)
+        .then(async function (response) {
+            if (response.status !== 200) {
+                console.log("movie not found");
+                return "";
+            } else
+                return await response.json();
+        });
+}
+async function addMovie() {
+    const data = await fetchMovie();
 
+    console.log(data)
 
-function addMovie() {
-    const titleInput = document.querySelector('#movie-title');
-    const ratedInput = document.querySelector('#movie-rated');
-    const genreInput = document.querySelector('#movie-genre');
-    let movieObject = {};
-    let genreObject = genreInput.value
-    movieObject = {'title': titleInput.value, 'rated': ratedInput.value, 'genre': genreInput.value}
-
+    const title = data.Title;
+    const rated = data.Rated;
+    const year = data.Year;
+    const rating = data.imdbRating;
+    const poster = data.Poster;
+    const plot = data.Plot;
+    const director = {'name': data.Director};
+    const genres = [];
+    data.Genre.split(", ").map(el => {
+        genres.push({'name' : el})
+    })
+    const actors = [];
+    data.Actors.split(", ").map(el => {
+        actors.push({'name' : el})
+    })
+    const movieObject = {
+        title,
+        rated,
+        year,
+        rating,
+        poster,
+        plot,
+        director,
+        genres,
+        actors
+    }
+    console.log(movieObject);
     console.log("Movie is ready to be inserted");
 
     const requestOptions = {
@@ -174,6 +199,34 @@ function addMovie() {
             }
         });
 }
+
+// function addMovie() {
+//     const titleInput = document.querySelector('#movie-title');
+//     const ratedInput = document.querySelector('#movie-rated');
+//     const genreInput = document.querySelector('#movie-genre');
+//     let movieObject = {};
+//     let genreObject = genreInput.value
+//     movieObject = {'title': titleInput.value, 'rated': ratedInput.value, 'genre': genreInput.value}
+//
+//     console.log("Movie is ready to be inserted");
+//
+//     const requestOptions = {
+//         method: "POST",
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify(movieObject)
+//     }
+//     fetch(`${BACKEND_HOST}/api/movies/`, requestOptions)
+//         .then(function(response) {
+//             if(!response.ok) {
+//                 console.log("Error Adding Movie: " + response.status);
+//             } else {
+//                 console.log("Movie Added");
+//                 createView('/')
+//             }
+//         });
+// }
 
 function deleteMovie() {
     const requestOptions = {
