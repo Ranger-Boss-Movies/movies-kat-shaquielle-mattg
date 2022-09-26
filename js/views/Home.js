@@ -9,13 +9,15 @@ export default function Home(props) {
     console.log(BACKEND_HOST);
     console.log(movies);
     console.log(movies[0]);
-    console.log(movies[0].title);
+    console.log(movies[0].genres);
+    console.log(movies[0].genres[0].name);
+    console.log(movies[0].genres.map(el => el.name));
     let html = getTopMovieHTML();
     html += displayMovieHTML(movies);
     html += getBottomMovieHTML();
     return html;
 }
-// TODO
+
 function getTopMovieHTML() {
     return `
        <header>
