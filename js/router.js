@@ -19,7 +19,9 @@ export default function router(URI) {
         '/': {
             returnView: Home,
             state: {
-                movies: '/api/movies'
+                movies: '/api/movies',
+                genres: '/api/genres',
+                actors: '/api/actors'
             },
             uri: '/',
             title: 'Home',

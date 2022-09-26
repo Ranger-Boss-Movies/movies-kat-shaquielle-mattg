@@ -2,14 +2,20 @@ import createView from "../createView.js"
 
 
 const BASE_URI = `${BACKEND_HOST}/api/s3/download`;
-
+let movies;
 export default function Home(props) {
+    movies = props.movies;
+
+    console.log(BACKEND_HOST);
+    console.log(movies);
+    console.log(movies[0]);
+    console.log(movies[0].title);
     let html = getTopMovieHTML();
-    html += displayMovieHTML(props.movies);
+    html += displayMovieHTML(movies);
     html += getBottomMovieHTML();
     return html;
 }
-
+// TODO
 function getTopMovieHTML() {
     return `
        <header>
@@ -77,8 +83,8 @@ function displayMovieHTML(movies) {
                     <div class="movieColContent">
                       <image class="poster" src="${moviePoster}"></image>
                       <p class="px-2 mb-1">${movies[i].title}</p>
-                      <p class="px-2 mb-1"><i class="bi bi-star-fill" style="color:goldenrod"></i>${movies[i].rating}</p>
-                      <p class="px-2 pb-2">${movies[i].genre}</p>
+                      <p class="px-2 mb-1"><i class="bi bi-star-fill" style="color:goldenrod"></i>${movies[i].score}</p>
+                      <p class="px-2 pb-2">${movies[i].genres.map(el => el.name).join(', ')}</p>
                     </div>
                 </div>
     `;
@@ -154,7 +160,7 @@ function addMovie() {
         },
         body: JSON.stringify(movieObject)
     }
-    fetch("https://cuddly-equable-trollius.glitch.me/movies", requestOptions)
+    fetch(`${BACKEND_HOST}/api/movies/`, requestOptions)
         .then(function(response) {
             if(!response.ok) {
                 console.log("Error Adding Movie: " + response.status);
@@ -174,7 +180,7 @@ function deleteMovie() {
     }
     let button = document.querySelector("#add-modal")
     const id = button.getAttribute(`data-bs-id`)
-    fetch(`https://cuddly-equable-trollius.glitch.me/movies/${id}`, requestOptions)
+    fetch(`${BACKEND_HOST}/api/movies/${id}`, requestOptions)
         .then(function (response) {
             if (!response.ok) {
                 console.log("There was an error in deleting movie: " + response.status);
@@ -201,7 +207,7 @@ function editMovie() {
         body: JSON.stringify(movieObject)
     }
 
-    fetch(`https://cuddly-equable-trollius.glitch.me/movies/${id}`, requestOptions)
+    fetch(`${BACKEND_HOST}/api/movies/${id}`, requestOptions)
         .then(function (response) {
             if (!response.ok) {
                 console.log("There was an error in deleting movie: " + response.status);
