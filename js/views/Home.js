@@ -43,8 +43,8 @@ function getTopMovieHTML() {
                                 <input type="text" class="form-control" id="movie-title">
                             </div>
                             <div class="mb-3">
-                                <label for="movie-rating" class="col-form-label">Rating:</label>
-                                <input type="text" class="form-control" id="movie-rating">
+                                <label for="movie-rated" class="col-form-label">Rated:</label>
+                                <input type="text" class="form-control" id="movie-rated">
                             </div>
                             <div class="mb-3">
                                 <label for="movie-genre" class="col-form-label">Genre:</label>
@@ -81,11 +81,12 @@ function displayMovieHTML(movies) {
         }
         html +=
             `
-                 <div class="col-3 movieCol" data-bs-toggle="modal" data-bs-target="#add-modal" data-bs-title="${movies[i].title}" data-bs-rating="${movies[i].rating}" data-bs-genre="${movies[i].genres.map(el => el.name).join('-')}" data-bs-id="${movies[i].id}">
+                 <div class="col-3 movieCol" data-bs-toggle="modal" data-bs-target="#add-modal" data-bs-title="${movies[i].title}" data-bs-rated="${movies[i].rated}" data-bs-genre="${movies[i].genres.map(el => el.name).join('-')}" data-bs-id="${movies[i].id}">
                     <div class="movieColContent">
                       <image class="poster" src="${moviePoster}"></image>
                       <p class="px-2 mb-1">${movies[i].title}</p>
-                      <p class="px-2 mb-1"><i class="bi bi-star-fill" style="color:goldenrod"></i>${movies[i].score}</p>
+                      <p class="px-2 mb-1">Rated: ${movies[i].rated}</p>
+                      <p class="px-2 mb-1"><i class="bi bi-star-fill" style="color:goldenrod"></i> ${movies[i].rating}</p>
                       <p class="px-2 pb-2">${movies[i].genres.map(el => el.name).join(', ')}</p>
                     </div>
                 </div>
@@ -116,17 +117,17 @@ function addListeners() {
     addModal.addEventListener('show.bs.modal', function(event) {
         let button = event.relatedTarget;
         let title = button.getAttribute('data-bs-title');
-        let rating = button.getAttribute('data-bs-rating');
+        let rated = button.getAttribute('data-bs-rated');
         let genre = button.getAttribute('data-bs-genre').split("-").join(", ");
         let id = button.getAttribute('data-bs-id');
         const modalTitle = addModal.querySelector('.modal-title')
         const titleInput = addModal.querySelector('#movie-title');
-        const ratingInput = addModal.querySelector('#movie-rating');
+        const ratedInput = addModal.querySelector('#movie-rated');
         const genreInput = addModal.querySelector('#movie-genre');
         addModal.setAttribute('data-bs-id', id)
         modalTitle.textContent = title
         titleInput.value = title
-        ratingInput.value = rating
+        ratedInput.value = rated
         genreInput.value = genre
         })
     const deleteButton = document.querySelector("#delete-btn")
@@ -148,10 +149,11 @@ function addMovieEvent() {
 
 function addMovie() {
     const titleInput = document.querySelector('#movie-title');
-    const ratingInput = document.querySelector('#movie-rating');
+    const ratedInput = document.querySelector('#movie-rated');
     const genreInput = document.querySelector('#movie-genre');
     let movieObject = {};
-    movieObject = {'title': titleInput.value, 'rating': ratingInput.value, 'genre': genreInput.value}
+    let genreObject = genreInput.value
+    movieObject = {'title': titleInput.value, 'rated': ratedInput.value, 'genre': genreInput.value}
 
     console.log("Movie is ready to be inserted");
 
@@ -197,10 +199,10 @@ function editMovie() {
     let button = document.querySelector("#add-modal")
     const id = button.getAttribute(`data-bs-id`)
     const titleInput = document.querySelector('#movie-title');
-    const ratingInput = document.querySelector('#movie-rating');
+    const ratedInput = document.querySelector('#movie-rated');
     const genreInput = document.querySelector('#movie-genre');
     let movieObject = {};
-    movieObject = {'title': titleInput.value, 'rating': ratingInput.value, 'genre': genreInput.value}
+    movieObject = {'title': titleInput.value, 'rated': ratedInput.value, 'genre': genreInput.value}
     const requestOptions = {
         method: "PUT",
         headers: {
